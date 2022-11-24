@@ -57,6 +57,8 @@ class FeedFragment : Fragment() {
             error?.let{
                 if(it){
                     countryError.visibility = View.VISIBLE
+                    countryLoading.visibility = View.GONE
+                    countryList.visibility = View.GONE
                 }else{
                     countryError.visibility = View.GONE
                 }
