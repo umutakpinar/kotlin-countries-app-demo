@@ -5,13 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umutakpinar.countriesapp.R
 import com.umutakpinar.countriesapp.adapter.CountryAdapter
 import com.umutakpinar.countriesapp.model.Country
+import com.umutakpinar.countriesapp.util.downlaodFromUrl
+import com.umutakpinar.countriesapp.util.placeholderProgressBar
 import com.umutakpinar.countriesapp.viewmodel.FeedViewModel
+import kotlinx.android.synthetic.main.fragment_country.*
 import kotlinx.android.synthetic.main.fragment_feed.*
 
 class FeedFragment : Fragment() {
@@ -35,11 +39,21 @@ class FeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        countryImage.downlaodFromUrl("something.com", placeholderProgressBar(requireContext()))
+
         feedViewModel = ViewModelProviders.of(this@FeedFragment).get(FeedViewModel::class.java)
         feedViewModel.refreshData()
 
         countryList.layoutManager = LinearLayoutManager(context)
         countryList.adapter = countryAdapter
+
+        refresherLayout.setOnRefreshListener {
+            countryList.visibility = View.GONE
+            countryError.visibility = View.GONE
+            countryLoading.visibility = View.VISIBLE
+            feedViewModel.refreshData()
+            refresherLayout.isRefreshing = false
+        }
 
         observeLiveData()
     }
