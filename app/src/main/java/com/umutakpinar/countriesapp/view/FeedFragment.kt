@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.umutakpinar.countriesapp.R
 import com.umutakpinar.countriesapp.adapter.CountryAdapter
 import com.umutakpinar.countriesapp.model.Country
-import com.umutakpinar.countriesapp.util.downlaodFromUrl
 import com.umutakpinar.countriesapp.util.placeholderProgressBar
 import com.umutakpinar.countriesapp.viewmodel.FeedViewModel
 import kotlinx.android.synthetic.main.fragment_country.*
@@ -38,8 +37,6 @@ class FeedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        countryImage.downlaodFromUrl("something.com", placeholderProgressBar(requireContext()))
 
         feedViewModel = ViewModelProviders.of(this@FeedFragment).get(FeedViewModel::class.java)
         feedViewModel.refreshData()

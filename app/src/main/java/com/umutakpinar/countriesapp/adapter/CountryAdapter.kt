@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.umutakpinar.countriesapp.R
 import com.umutakpinar.countriesapp.model.Country
+import com.umutakpinar.countriesapp.util.downloadFromUrl
+import com.umutakpinar.countriesapp.util.placeholderProgressBar
 import com.umutakpinar.countriesapp.view.CountryFragmentDirections
 import com.umutakpinar.countriesapp.view.FeedFragmentDirections
 import kotlinx.android.synthetic.main.recyler_row.view.*
@@ -26,8 +28,8 @@ class CountryAdapter(val CountryList : ArrayList<Country>) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: CountryViewHolder, position: Int) {
         holder.view.countryName.text = CountryList[position].countryName
         holder.view.countryRegion.text = CountryList[position].countryRegion
-        // Burada bir de görseli almamız gerek ancak şuan herahngi bir veri çekmediğimiz için şimdilik görselle çalışmıyoruz.
-        //Aslında şöyle yazıalbilirdi mesela holder.view.countryImage.setImageResource() şeklinde!
+        holder.view.countryImage.downloadFromUrl(CountryList[position].imageUrl!!,
+            placeholderProgressBar(holder.view.context))
 
         holder.view.setOnClickListener {
             val action = FeedFragmentDirections.actionFeedFragmentToCountryFragment(position)
