@@ -36,11 +36,16 @@ class FeedViewModel(application : Application) : BaseViewModel(application){
     }
 
     private fun getDataFromSQLite(){
+        countryLoading.value = true
         launch {
             val countries = CountryDatabase(getApplication()).countryDao().getALlCountries()
             showCountries(countries)
             Toast.makeText(getApplication(), "Countries from SQLite", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun refreshFromAPI(){
+        getDataFromAPI()
     }
 
     private fun getDataFromAPI(){
