@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.umutakpinar.countriesapp.R
+import com.umutakpinar.countriesapp.util.downloadFromUrl
+import com.umutakpinar.countriesapp.util.placeholderProgressBar
 import com.umutakpinar.countriesapp.viewmodel.CountryViewModel
 import kotlinx.android.synthetic.main.fragment_country.*
 import kotlinx.android.synthetic.main.fragment_country.view.*
@@ -22,8 +24,7 @@ class CountryFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_country, container, false)
     }
@@ -31,12 +32,12 @@ class CountryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        countryViewModel = ViewModelProviders.of(this@CountryFragment).get(CountryViewModel::class.java)
-        countryViewModel.getDataFromRoom()
-
         arguments?.let{ //eğer gelen argümanlar boş değilse CountryFragmentsArgs sınıfından Bundle'ı çek
             countryUuid = CountryFragmentArgs.fromBundle(it).countryUuid
         }
+
+        countryViewModel = ViewModelProviders.of(this@CountryFragment).get(CountryViewModel::class.java)
+        countryViewModel.getDataFromRoom(countryUuid)
 
         observeLiveData()
 
@@ -50,7 +51,9 @@ class CountryFragment : Fragment() {
                 countryRegion.text = country.countryRegion
                 countryCurrency.text = country.countryCurrency
                 countryLanguage.text = country.countryLanguage
-                /*burada image da eklemekg gerek ancak image bilgisi yok bizde henüz dummy data var*/
+                context?.let{
+                    countryImage.downloadFromUrl(country.imageUrl!!, placeholderProgressBar(it))
+                }
             }
         })
     }

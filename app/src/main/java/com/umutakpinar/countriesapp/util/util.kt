@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.umutakpinar.countriesapp.R
 
+//KTX kotlin android extensions
 fun ImageView.downloadFromUrl(url : String, progressDrawable: CircularProgressDrawable){
 
     val options = RequestOptions()
